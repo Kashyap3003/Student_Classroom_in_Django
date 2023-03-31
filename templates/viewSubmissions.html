@@ -1,0 +1,54 @@
+{% include 'header.html'%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classroom</title>
+    {% load static %}
+    <link rel="stylesheet" href="/static/viewSubmissions.css">
+</head>
+<body>
+    <div>
+        <table border="solid black 2px">
+            <tr>
+                <th>Work</th>
+                <th>View</th>
+                <th>Student Name</th>
+                <th>Maximum Marks</th>
+                <th>Marks Obtained</th>
+                <th>Assign Mark</th>
+            </tr>
+            {% if all_submissions != "empty" %}
+                {% for i in all_submissions %}
+                    <tr>
+                        <!-- <td>Click</a></td> -->
+                        <td><embed src="/media/{{i.work}}" type="application/pdf" onclick="location.href = '/media/{{i.work}}';"></td> 
+                        <td><a href="/media/{{i.work}}">Click</a></td>
+                        <!-- <td><a href="/media/{{i.work}}"><img src="/static/Assignment_Front.png" alt="Hello" height="100px" width="100px"></a></td>                             -->
+                        <!-- <object data="/media/{{i.work}}" type="application/pdf"></object>  -->
+                        <!-- <td><iframe src="/media/{{i.work}}" frameborder="1">Click</iframe></td> -->
+                        <td>{{i.user_id.name}}</td>
+                        <td>{{marks}}</td>
+                        <td>
+                            {% if i.marks_obtained != null %}
+                                {{i.marks_obtained}}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td><form action="addmarks" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="submission_id" value="{{i.submission_id}}">
+                            <input type="hidden" name="assign_id" value="{{i.assignment_id.assignment_id}}">
+                            <input type="number" name="marks" placeholder="Enter Marks">
+                            <input type="submit" value="Add">
+                        </form></td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </table>
+    </div>
+</body>
+</html>

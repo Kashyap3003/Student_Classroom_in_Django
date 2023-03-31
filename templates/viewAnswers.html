@@ -1,0 +1,31 @@
+{% include 'header.html'%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body style="font-size: 22px;">
+    <div>Question : </div>
+    <div>{{doubt.question}}</div>
+    <br>
+    <div>Answers : </div>
+    {% for i in answer_list %}
+        <div style="float: left;">{{i.ans}} <br> By {{i.user_id.name}}</div>
+        <div> ------- {{i.validate}}</div>
+        <div>
+            {% if request.session.role == "Teacher" and i.validate != "Verified" %}
+                <form action="validateanswer" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="answer_id" value="{{i.answer_id}}">
+                    <input type="hidden" name="doubt_id" value="{{doubt.doubt_id}}">
+                    <input type="submit" value="Verify">
+                </form>
+            {% endif %}
+        </div>
+        <br>
+    {% endfor %}
+</body>
+</html>
