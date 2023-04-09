@@ -190,10 +190,12 @@ def streamPage(request):
     return render(request, "Stream.html", data)
 
 def logout(request):
-    del request.session['class_id']
+    # if request.session['class_id']:
+    #     del request.session['class_id']
     del request.session['user_id']
     del request.session['role']
-    del request.session['class_name']
+    # if request.session['class_name']:
+    #     del request.session['class_name']
     del request.session['name']
     return render(request, "Login&Signup.html")
 
