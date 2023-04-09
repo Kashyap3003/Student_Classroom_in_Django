@@ -20,11 +20,12 @@ def login(request):
     if request.method == "POST":
         email = request.POST['email']
         password = request.POST['password']
-        person = Users.objects.get(email=email)
         msg = ""
-        if not person:
+        try:
+            person = Users.objects.get(email=email)
+        except:
             msg = "Users not registered"
-        else:
+        if msg == "":
             if person.password == password:
                 request.session['user_id'] = person.user_id
                 request.session['role'] = person.role
